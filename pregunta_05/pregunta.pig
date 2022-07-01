@@ -12,3 +12,6 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+
+data = LOAD 'data.tsv' AS (letra:chararray, corchetes:chararray, lista:int);
+corchetes_col = FOREACH data GENERATE corchetes;
