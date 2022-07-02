@@ -34,15 +34,7 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
-table_dates = FOREACH data GENERATE date, LOWER(ToString(ToDate(date), 'MMM')) as month_,
-    SUBSTRING(date, 5, 7) as x,
-    GetMonth(ToDate(date)) as y;
-
-table_dates_replace = FOREACH table_dates GENERATE date, REPLACE(REPLACE(REPLACE(REPLACE(
-    month_, 'jan', 'ene'),
-         'apr', 'abr'),
-         'aug', 'ago'),
-         'dec', 'dic'),
-    x, y;
-
-STORE table_dates_replace INTO 'output' USING PigStorage(',');
+data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
+table_date = FOREACH data GENERATE fecha AS col_1, LOWER(ToString(ToDate(fecha,'yyyy-MM-dd'), 'MMM')) AS col_2, ToString(ToDate(fecha,'yyyy-MM-dd'), 'MM') AS col_3, GetMonth(ToDate(fecha,'yyyy-MM-dd')) AS col_4;
+table_date_1 = FOREACH table_date GENERATE col_1, (col_2 == 'jan'? 'ene':(col_2 == 'apr'? 'abr':(col_2 == 'aug'? 'ago':(col_2 == 'dec'? 'dic':col_2)))) AS col_2, col_3, col_4;
+STORE table_date_1 INTO 'output' using PigStorage(',');
