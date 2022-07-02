@@ -21,9 +21,7 @@ $ pig -x local -f pregunta.pig
         /* >>> Escriba su respuesta a partir de este punto <<< */
 */
 
-data = LOAD 'data.csv' USING PigStorage(',') AS (id:CHARARRAY, name:CHARARRAY, last_name:CHARARRAY, date:CHARARRAY, color:CHARARRAY, value:int);
-
-table_colors = FOREACH data GENERATE name, color;
-table_colors_filter = FILTER table_colors BY NOT (color MATCHES 'blue|black');
-
-STORE table_colors_filter INTO 'output' USING PigStorage(',');
+data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
+table_color = FOREACH data GENERATE nombre AS col_1, color AS col_2;
+table_color_filter = FILTER table_color BY NOT col_2 IN('blue','black');
+STORE table_color_filter INTO 'output' using PigStorage(',');
