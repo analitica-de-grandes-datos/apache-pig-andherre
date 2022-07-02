@@ -17,5 +17,5 @@ $ pig -x local -f pregunta.pig
 data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
 table_date = FOREACH data GENERATE GetYear(ToDate(fecha,'yyyy-MM-dd')) AS columna_1;
 cluster = GROUP table_date BY columna_1;
-contador = FOREACH cluster GENERATE group, COUNT(tabla_fecha);
+contador = FOREACH cluster GENERATE group, COUNT(table_date);
 STORE contador INTO 'output' using PigStorage(',');
