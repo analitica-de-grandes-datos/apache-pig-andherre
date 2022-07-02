@@ -14,8 +14,8 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
-table_years = FOREACH data GENERATE GetYear(date) as year;
-table_years_grouped = GROUP table_years BY year;
-table_years_counted = FOREACH table_years_grouped GENERATE group, COUNT(table_years);
-
-STORE table_years_counted INTO 'output' USING PigStorage(',');
+data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
+tabla_fecha = FOREACH data GENERATE GetYear(ToDate(fecha,'yyyy-MM-dd')) AS col_1;
+grouped = GROUP tabla_fecha BY col_1;
+contador = FOREACH grouped GENERATE group, COUNT(tabla_fecha);
+STORE contador INTO 'output' using PigStorage(',');
