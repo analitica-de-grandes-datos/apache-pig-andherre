@@ -23,6 +23,6 @@ $ pig -x local -f pregunta.pig
 */
 
 data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
-colors = FOREACH data GENERATE nombre AS col_1, color AS col_2;
-color_result = FILTER colors BY NOT STARTSWITH(col_2,'b');
+table_color = FOREACH data GENERATE nombre AS col_1, color AS col_2;
+color_result = FILTER table_color  BY NOT STARTSWITH(col_2,'b');
 STORE color_result INTO 'output' using PigStorage(',');
