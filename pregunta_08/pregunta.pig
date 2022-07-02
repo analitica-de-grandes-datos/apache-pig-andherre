@@ -18,9 +18,9 @@ $ pig -x local -f pregunta.pig
 */
 
 data = LOAD 'data.tsv' AS (letra:chararray, corchetes:chararray, lista:chararray);
-columnas = FOREACH data GENERATE FLATTEN(TOKENIZE(corchetes,',')) AS col_2, FLATTEN(TOKENIZE(lista,',')) AS col_3;
-sin_alfanum = FOREACH columnas GENERATE REPLACE (col_2,'([^a-zA-Z\\s]+)','') as col_2, REPLACE (col_3,'([^a-zA-Z\\s]+)','') as col_3;
-generar_tupla = FOREACH sin_alfanum GENERATE TOTUPLE(col_2, col_3) as pareja;
-agrup = GROUP generar_tupla BY pareja;
-agrup_2 = FOREACH agrup GENERATE group, COUNT(generar_tupla);
-STORE agrup_2 INTO 'output' using PigStorage(',');
+col = FOREACH data GENERATE FLATTEN(TOKENIZE(corchetes,',')) AS col_2, FLATTEN(TOKENIZE(lista,',')) AS col_3;
+null_alfanum = FOREACH col GENERATE REPLACE (col_2,'([^a-zA-Z\\s]+)','') as col_2, REPLACE (col_3,'([^a-zA-Z\\s]+)','') as col_3;
+tupla = FOREACH null_alfanum GENERATE TOTUPLE(col_2, col_3) as pareja;
+grup = GROUP generar_tupla BY pareja;
+grup_2 = FOREACH grup GENERATE group, COUNT(tupla);
+STORE grup_2 INTO 'output' using PigStorage(',');
