@@ -22,5 +22,6 @@ table = FOREACH data GENERATE FLATTEN(TOKENIZE(corchetes,',')) AS col_2, FLATTEN
 alfanum = FOREACH table GENERATE REPLACE (col_2,'([^a-zA-Z\\s]+)','') as col_2, REPLACE (col_3,'([^a-zA-Z\\s]+)','') as col_3;
 crear_tupla = FOREACH alfanum GENERATE TOTUPLE(col_2, col_3) as pareja;
 agrup = GROUP crear_tupla BY pareja;
-agrup_2 = FOREACH agrup GENERATE group, COUNT(tupla);
+agrup_2 = FOREACH agrup GENERATE group, COUNT(crear_tupla);
 STORE agrup_2 INTO 'output' using PigStorage(',');
+
