@@ -32,3 +32,9 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
+colum_2 = FOREACH data GENERATE fid, nombre AS col_2;
+colum_3 = FOREACH data GENERATE fid, apellido AS col_3;
+result = JOIN colum_2 BY (fid), colum_3 BY (fid);
+columna_f1 = FOREACH result GENERATE col_2, col_3;
+STORE columna_f1 INTO 'output' using PigStorage('@');
