@@ -14,4 +14,10 @@ $ pig -x local -f pregunta.pig
 */
 
 data = LOAD 'data.tsv' AS (letra:chararray, corchetes:chararray, lista:int);
-corchetes_col = FOREACH data GENERATE corchetes;
+cor_colum = FOREACH data GENERATE corchetes;
+flatten_corchetes = FOREACH cor_colum GENERATE FLATTEN(TOKENIZE(corchetes)) AS letras;
+nule_cor_1 = FILTER flatten_corchetes BY NOT (letras MATCHES '{');
+nule_cor_2 = FILTER nule_cor_1 BY NOT (letras MATCHES '}');
+g_letras = GROUP nule_cor_2 BY letras;
+g_letras_count = FOREACH g_letras GENERATE group, COUNT(nule_cor_2);
+STORE letras_count INTO 'output' using PigStorage(',');
