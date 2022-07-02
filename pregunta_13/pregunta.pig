@@ -24,5 +24,5 @@ $ pig -x local -f pregunta.pig
 
 data = LOAD 'data.csv' USING PigStorage(',') AS (fid:int, nombre:chararray, apellido:chararray, fecha:chararray, color:chararray, num:int);
 table_color = FOREACH data GENERATE color AS col_1;
-filter_table_color = FILTER table_color BY STARTSWITH(col_1,'b');
-STORE filter_table_color INTO 'output' using PigStorage(',');
+color_filter = FILTER table_color BY STARTSWITH(col_1,'b');
+STORE color_filter INTO 'output' using PigStorage(',');
