@@ -22,7 +22,7 @@ $ pig -x local -f pregunta.pig
 
 data = LOAD 'data.csv' USING PigStorage(',') AS (id:CHARARRAY, name:CHARARRAY, last_name:CHARARRAY, date:CHARARRAY, color:CHARARRAY, value:int);
 
-colors = FOREACH data GENERATE name, color;
-colors_filter = FILTER colors BY (color MATCHES 'blue|black');
+table_colors = FOREACH data GENERATE name, color;
+table_colors_filter = FILTER table_colors BY (color MATCHES 'blue|black');
 
-STORE colors_filter INTO 'output' USING PigStorage(',');
+STORE table_colors_filter INTO 'output' USING PigStorage(',');
