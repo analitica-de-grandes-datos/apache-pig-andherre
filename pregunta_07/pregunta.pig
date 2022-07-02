@@ -14,8 +14,9 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+
 data = LOAD 'data.tsv' AS (letra:chararray, corchetes:chararray, lista:chararray);
-col = FOREACH data GENERATE letra, TOKENIZE(corchetes, ',') AS col_2, TOKENIZE(lista,',') AS col_3;
-count = FOREACH col GENERATE letra, COUNT(col_2) AS col_2, COUNT(col_3) AS col_3;
-order = ORDER count BY letra, col_2, col_3 asc;
-STORE order INTO 'output' using PigStorage(',');
+table = FOREACH data GENERATE letra, TOKENIZE(corchetes, ',') AS col_2, TOKENIZE(lista,',') AS col_3;
+conteo = FOREACH table GENERATE letra, COUNT(col_2) AS col_2, COUNT(col_3) AS col_3;
+orden = ORDER conteo BY letra, col_2, col_3 asc;
+STORE orden INTO 'output' using PigStorage(',');
