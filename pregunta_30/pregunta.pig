@@ -33,4 +33,21 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+data = LOAD 'data.csv' USING PigStorage(',') AS (id:CHARARRAY, name:CHARARRAY, last_name:CHARARRAY, date:CHARARRAY, color:CHARARRAY, value:int);
 
+colum_date = FOREACH data GENERATE date,
+    SUBSTRING(date, 8, 10) as x,
+    GetDay(ToDate(date)) as y,
+    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+    ToString(ToDate(date), 'EEEE'),
+    'Monday', 'lunes'),
+    'Tuesday', 'martes'),
+    'Wednesday', 'miercoles'),
+    'Thursday', 'jueves'),
+    'Friday', 'viernes'),
+    'Saturday', 'sabado'),
+    'Sunday', 'domingo') as dia;
+
+colum_date_string = FOREACH colum_date GENERATE date, x, y, SUBSTRING(dia,0, 3), dia;
+
+STORE colum_date_string INTO 'output' USING PigStorage(',');
