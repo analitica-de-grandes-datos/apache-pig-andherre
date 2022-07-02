@@ -20,9 +20,9 @@ $ pig -x local -f pregunta.pig
 
         /* >>> Escriba su respuesta a partir de este punto <<< */
 */
-Pregunta_18 = LOAD 'data.csv' USING PigStorage(',') AS (id:CHARARRAY, name:CHARARRAY, last_name:CHARARRAY, date:CHARARRAY, color:CHARARRAY, value:int);
+data = LOAD 'data.csv' USING PigStorage(',') AS (id:CHARARRAY, name:CHARARRAY, last_name:CHARARRAY, date:CHARARRAY, color:CHARARRAY, value:int);
 
-Select_colors = FOREACH Pregunta_18 GENERATE name, color;
-Select_colors_filter = FILTER Select_colors BY NOT (color MATCHES 'blue|black');
+colors = FOREACH data GENERATE name, color;
+colors_filter = FILTER colors BY NOT (color MATCHES 'blue|black');
 
-STORE Select_colors_filter INTO 'output' USING PigStorage(',');
+STORE colors_filter INTO 'output' USING PigStorage(',');
