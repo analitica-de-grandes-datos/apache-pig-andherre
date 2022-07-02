@@ -23,7 +23,7 @@ $ pig -x local -f pregunta.pig
 */
 data = LOAD 'data.csv' USING PigStorage(',') AS (id:CHARARRAY, name:CHARARRAY, last_name:CHARARRAY, date:CHARARRAY, color:CHARARRAY, value:int);
 
-Select_colors = FOREACH data GENERATE color;
-Select_colors_filter = FILTER Select_colors BY (color MATCHES '.*^[b].*');
+colors = FOREACH data GENERATE color;
+colors_filter = FILTER colors BY (color MATCHES '.*^[b].*');
 
-STORE Select_colors_filter INTO 'output' USING PigStorage(',');
+STORE colors_filter INTO 'output' USING PigStorage(',');
