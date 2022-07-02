@@ -20,4 +20,4 @@ nule_cor_1 = FILTER flatten_corchetes BY NOT (letras MATCHES '{');
 nule_cor_2 = FILTER nule_cor_1 BY NOT (letras MATCHES '}');
 g_letras = GROUP nule_cor_2 BY letras;
 g_letras_count = FOREACH g_letras GENERATE group, COUNT(nule_cor_2);
-STORE letras_count INTO 'output' using PigStorage(',');
+STORE g_letras_count INTO 'output' using PigStorage(',');
